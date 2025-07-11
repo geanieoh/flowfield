@@ -1,5 +1,3 @@
-# Flowfield
-
 ## how
 - creates a flat array of cells representing a grid
 - from the target, works its way outward keeping track of each cells distance to the target
