@@ -1,5 +1,4 @@
 # Flowfield
-program creates a flowfield from a given point
 
 ## how
 - creates a flat array of cells representing a grid
