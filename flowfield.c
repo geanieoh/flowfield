@@ -86,6 +86,7 @@ void integrationfield_create(Flowfield* field, vec2 target){
     for(int i = 0; i < field->gridsize[0]*field->gridsize[1]; i++) {
         if(field->grid[i].cost == 255) continue;
 
+        field->grid[i].dir = F_NONE;
         field->grid[i].cost = 1;
         field->grid[i].bestCost = 65535;
     }
@@ -94,12 +95,12 @@ void integrationfield_create(Flowfield* field, vec2 target){
     field->grid[field->destIndex].bestCost = 0;
     field->grid[field->destIndex].cost = 0;
 
-    Queue* q = malloc(sizeof(Queue));
-    queue_create(q);
-    enqueue(q, &field->grid[field->destIndex]);
+    Queue q;
+    queue_create(&q);
+    enqueue(&q, &field->grid[field->destIndex]);
 
-    while(q->count > 0){
-        Cell* cur = q->front->cell;
+    while(q.count > 0){
+        Cell* cur = q.front->cell;
 
         Cell* neighbors[4];
         cell_get_neighbors(field, cur, neighbors, _false);
@@ -110,14 +111,12 @@ void integrationfield_create(Flowfield* field, vec2 target){
 
             if(neighbors[i]->cost + cur->bestCost < neighbors[i]->bestCost){
                 neighbors[i]->bestCost = neighbors[i]->cost + cur->bestCost;
-                enqueue(q, neighbors[i]);
+                enqueue(&q, neighbors[i]);
             }
         }
 
-        dequeue(q);
+        dequeue(&q);
     }
-
-    free(q);
 }
 
 void flowfield_create(Flowfield* field){
