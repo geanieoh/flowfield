@@ -68,6 +68,13 @@ void cell_get_neighbors(Flowfield* field, Cell* cell, Cell** neighbors, _bool wI
 }
 
 void flowfield_init(Flowfield* field, ivec2 gridsize){
+    for(int i = 0; i < field->gridsize[0]*field->gridsize[1]; i++) {
+        if(field->grid[i].cost == 255) continue;
+
+        field->grid[i].cost = 1;
+        field->grid[i].bestCost = 65535;
+    }
+    
     field->gridsize[0] = gridsize[0]/(CELL_RADIUS*2); field->gridsize[1] = gridsize[1]/(CELL_RADIUS*2);
     field->grid = malloc(sizeof(Cell)*field->gridsize[0]*field->gridsize[1]);
 
