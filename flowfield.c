@@ -27,9 +27,13 @@ void index_to_world(Flowfield* field, int x, int y, vec2 dest){
 }
 
 int world_to_index(Flowfield* field, vec2 coord){
-    float a = (int)coord[0] + CELL_RADIUS; 
-    float b = (int)coord[1] + CELL_RADIUS; 
-    return ((((b - CELL_RADIUS)*(-1)) + (field->gridsize[1]/2))/(CELL_RADIUS*2))*field->gridsize[0] + ((a - CELL_RADIUS) + (field->gridsize[0]/2)/(CELL_RADIUS*2));
+    int gridx = (int)((coord[0] + field->gridsize[0]*CELL_RADIUS)/(CELL_RADIUS*2));
+    int gridy = (int)((coord[2] + field->gridsize[1]*CELL_RADIUS)/(CELL_RADIUS*2));
+    if(gridx < 0) gridx = 0;
+    if(gridx >= field->gridsize[0]) gridx = field->gridsize[0] - 1;
+    if(gridy < 0) gridy = 0;
+    if(gridy >= field->gridsize[1]) gridy = field->gridsize[1] - 1;
+    return (gridy*field->gridsize[0] + gridx);
 }
 
 void cell_get_neighbors(Flowfield* field, Cell* cell, Cell** neighbors, _bool wIntercardinal){
