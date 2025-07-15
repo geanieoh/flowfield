@@ -121,6 +121,8 @@ void integrationfield_create(Flowfield* field, vec2 target){
 
 void flowfield_create(Flowfield* field){
     for(int i = 0; i < field->gridsize[0]*field->gridsize[1]; i++){
+        if(field->grid[i].cost == 255) continue;
+
         Cell* neighbors[8];
         cell_get_neighbors(field, &field->grid[i], neighbors, _true);
 
